@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Quiz app</string>
+    <string name="desc_pig_face">photo of man with pig face with a rock beach background</string>
+    <string name="desc_ai_baby">AI generated baby holding back a laugh</string>
+    <string name="desc_mario_tpose">3D model of Mario in a T-pose position</string>
+    <string name="desc_skibidi_boss">Giant head emerging from a toilet facing a character with plungers</string>
+    <string name="desc_freddy_fazbear">Close up of Freddy Fazbear animatronic with eyes wide open</string>
+    <string name="desc_looksmaxxing">Abstract distorted face with a crazy sharp chin and smirk</string>
+    <string name="desc_pizza_man">Man in a black t-shirt opening a pizza box</string>
+    <string name="desc_lightskin_stare">Close up of a man giving a focused stare toward the camera</string>
+    <string name="desc_uwu_emoji">Yellow blushing emoji with large eyes and shy hand gesture</string>
+    <string name="desc_drake_sunset">Drake taking a mirror selfie with a sunset and heart effects background</string>
+    <string name="desc_goat_sauce">A white goat standing next to a bowl of red tomato sauce</string>
+    <string name="desc_sigma_face">Close up of a man with silver hair making a smug facial expression</string>
+    <string name="desc_griddy_dance">Football player in a white and green uniform performing a dance on a field</string>
+    <string name="desc_hawk_tuah">Photo of a woman speaking into a microphone during a street interview</string>
+
+    <string name="pig_face">Pig face</string>
+    <string name="ai_baby">AI baby</string>
+    <string name="mario_tpose">T-pose</string>
+    <string name="skibidi_boss">Skibidi toilet</string>
+    <string name="freddy_fazbear">Freddy fazbear</string>
+    <string name="looksmaxxing">Looksmaxxing</string>
+    <string name="pizza_man">I would never order a whole pizza for myself</string>
+    <string name="lightskin_stare">Lightskin stare</string>
+    <string name="uwu_emoji">UwU</string>
+    <string name="drake_sunset">Kiki, do you love me?</string>
+    <string name="goat_sauce">Goated with the sauce</string>
+    <string name="sigma_face">Sigma</string>
+    <string name="griddy_dance">Hit the griddy</string>
+    <string name="hawk_tuah">Hawk tuah!</string>
+    <string name="add_a_label">Add a label</string>
+</resources>

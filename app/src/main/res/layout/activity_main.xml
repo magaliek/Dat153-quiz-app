@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ScrollView
+        android:layout_width="409dp"
+        android:layout_height="729dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.gridlayout.widget.GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:columnCount="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+
+                <ImageView
+                    android:id="@+id/alex"
+                    android:layout_width="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_height="252dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@string/desc_pig_face"
+                    app:srcCompat="@drawable/alex_pork" />
+
+                <EditText
+                    android:id="@+id/pig_face_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="8dp"
+                    android:minHeight="48dp"
+                    android:hint="@string/add_a_label"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text="@string/pig_face" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:id="@+id/baby"
+                    android:layout_width="wrap_content"
+                    android:layout_height="252dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@string/desc_ai_baby"
+                    app:srcCompat="@drawable/baby_laugh_ai" />
+
+                <EditText
+                    android:id="@+id/babyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="8dp"
+                    android:gravity="center"
+                    android:minHeight="48dp"
+                    android:hint="@string/add_a_label"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text="@string/ai_baby" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:id="@+id/freddy_fazbear"
+                    android:layout_width="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_height="252dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@string/desc_freddy_fazbear"
+                    app:srcCompat="@drawable/freddy_fazbear" />
+
+                <EditText
+                    android:id="@+id/freddy_fazbearText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="8dp"
+                    android:minHeight="48dp"
+                    android:gravity="center"
+                    android:hint="@string/add_a_label"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text="@string/freddy_fazbear" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:id="@+id/goat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="252dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@string/desc_goat_sauce"
+                    app:srcCompat="@drawable/goated_with_the_sauce" />
+
+                <EditText
+                    android:id="@+id/goatText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="8dp"
+                    android:minHeight="48dp"
+                    android:gravity="center"
+                    android:hint="@string/add_a_label"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text="@string/goat_sauce" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:id="@+id/griddy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="252dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@string/desc_griddy_dance"
+                    app:srcCompat="@drawable/griddy" />
+
+                <EditText
+                    android:id="@+id/griddyText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="8dp"
+                    android:minHeight="48dp"
+                    android:gravity="center"
+                    android:hint="@string/add_a_label"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text="@string/griddy_dance" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:id="@+id/hawk_tuah"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="252dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@string/desc_hawk_tuah"
+                    app:srcCompat="@drawable/hawk_tuah" />
+
+                <EditText
+                    android:id="@+id/hawk_tuahText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="8dp"
+                    android:gravity="center"
+                    android:hint="@string/add_a_label"
+                    android:minHeight="48dp"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text="@string/hawk_tuah" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:id="@+id/pizza"
+                    android:layout_width="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_height="240dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@string/desc_pizza_man"
+                    app:srcCompat="@drawable/i_would_never_order_a_whole_pizza_to_myself" />
+
+                <EditText
+                    android:id="@+id/pizzaText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="8dp"
+                    android:gravity="center"
+                    android:hint="@string/add_a_label"
+                    android:textSize="16sp"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine"
+                    android:imeOptions="actionDone"
+                    android:maxLines="3"
+                    android:minHeight="48dp"
+                    android:text="@string/pizza_man" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:id="@+id/kiki"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="252dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@string/desc_drake_sunset"
+                    app:srcCompat="@drawable/kiki_do_you_love_me" />
+
+                <EditText
+                    android:id="@+id/kikiText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="8dp"
+                    android:gravity="center"
+                    android:hint="@string/add_a_label"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:minHeight="48dp"
+                    android:text="@string/drake_sunset" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:id="@+id/lightskin_stare"
+                    android:layout_width="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_height="252dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@string/desc_lightskin_stare"
+                    app:srcCompat="@drawable/lightskin_stare" />
+
+                <EditText
+                    android:id="@+id/lightskinText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="8dp"
+                    android:gravity="center"
+                    android:hint="@string/add_a_label"
+                    android:minHeight="48dp"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text="@string/lightskin_stare" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:id="@+id/looksmaxxing"
+                    android:layout_width="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_height="252dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@string/desc_looksmaxxing"
+                    app:srcCompat="@drawable/looksmaxxing" />
+
+                <EditText
+                    android:id="@+id/looksmaxxingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="8dp"
+                    android:minHeight="48dp"
+                    android:gravity="center"
+                    android:hint="@string/add_a_label"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text="@string/looksmaxxing" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:id="@+id/sigma_face"
+                    android:layout_width="wrap_content"
+                    android:layout_height="252dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="@string/desc_sigma_face"
+                    app:srcCompat="@drawable/sigma_face" />
+
+                <EditText
+                    android:id="@+id/sigmaText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="8dp"
+                    android:gravity="center"
+                    android:minHeight="48dp"
+                    android:hint="@string/add_a_label"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text="@string/sigma_face" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:id="@+id/skibidi"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="252dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@string/desc_skibidi_boss"
+                    app:srcCompat="@drawable/skibidi_toilet" />
+
+                <EditText
+                    android:id="@+id/skibidiText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="8dp"
+                    android:minHeight="48dp"
+                    android:gravity="center"
+                    android:hint="@string/add_a_label"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text="@string/skibidi_boss" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:id="@+id/t_pose"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="252dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@string/desc_mario_tpose"
+                    app:srcCompat="@drawable/t_pose_for_dominance" />
+
+                <EditText
+                    android:id="@+id/t_poseText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginHorizontal="8dp"
+                    android:minHeight="48dp"
+                    android:gravity="center"
+                    android:hint="@string/add_a_label"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text="@string/mario_tpose" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="300dp"
+                android:orientation="vertical"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:id="@+id/uwu"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="252dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@string/desc_uwu_emoji"
+                    app:srcCompat="@drawable/uwu" />
+
+                <EditText
+                    android:id="@+id/uwuText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:minHeight="48dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:gravity="center"
+                    android:hint="@string/add_a_label"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text="@string/uwu_emoji" />
+            </LinearLayout>
+
+        </androidx.gridlayout.widget.GridLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
