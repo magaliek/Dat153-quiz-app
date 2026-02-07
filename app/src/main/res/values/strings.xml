@@ -15,7 +15,7 @@
     <string name="desc_griddy_dance">Football player in a white and green uniform performing a dance on a field</string>
     <string name="desc_hawk_tuah">Photo of a woman speaking into a microphone during a street interview</string>
 
-    <string name="pig_face">Pig face</string>
+    <string name="pig_face">Alexander Pork</string>
     <string name="ai_baby">AI baby</string>
     <string name="mario_tpose">T-pose</string>
     <string name="skibidi_boss">Skibidi toilet</string>
@@ -30,4 +30,5 @@
     <string name="griddy_dance">Hit the griddy</string>
     <string name="hawk_tuah">Hawk tuah!</string>
     <string name="add_a_label">Add a label</string>
+    <string name="gallery">Gallery</string>
 </resources>

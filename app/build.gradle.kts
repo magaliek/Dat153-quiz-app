@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
+
+    id("org.jetbrains.kotlin.plugin.compose") version "2.3.10"
 }
 
 android {
@@ -7,7 +9,13 @@ android {
     compileSdk {
         version = release(36)
     }
+    buildFeatures {
+        compose = true
+    }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
     defaultConfig {
         applicationId = "com.example.quizapp"
         minSdk = 24
@@ -40,6 +48,12 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.gridlayout)
+    implementation(libs.androidx.runtime)
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.coil.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
