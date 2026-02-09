@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Quiz app</string>
+    <string name="gallery">Brainrot Gallery</string>
+
     <string name="desc_pig_face">photo of man with pig face with a rock beach background</string>
     <string name="desc_ai_baby">AI generated baby holding back a laugh</string>
     <string name="desc_mario_tpose">3D model of Mario in a T-pose position</string>
@@ -30,5 +32,10 @@
     <string name="griddy_dance">Hit the griddy</string>
     <string name="hawk_tuah">Hawk tuah!</string>
     <string name="add_a_label">Add a label</string>
-    <string name="gallery">Gallery</string>
+
+    <string name="new_meme">new photo</string>
+    <string name="desc_new_meme">just added image</string>
+
+    <string name="quiz_welcome">Welcome to the brainrot quiz! How brainrotted are you? Let\'s find out!</string>
+    <string name="score_display">Score: %1$d / %2$d</string>
 </resources>
