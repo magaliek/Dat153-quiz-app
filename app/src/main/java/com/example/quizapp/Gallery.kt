@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -27,6 +28,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -50,6 +52,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.SortByAlpha
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
@@ -77,36 +80,36 @@ class Gallery : ComponentActivity() {
      * @param onTextChange Callback triggered when the user edits the name field.
      */
     @Composable
-    fun MemeCard(meme: MemeItem, onImageClick: () -> Unit, onTextChange: (String) -> Unit) {
+    fun MemeCard(meme: MemeItem, onImageClick: () -> Unit, onTextChange: (String) -> Unit, onDelete: () -> Unit) {
         val focusManager = LocalFocusManager.current
 
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .background(Color.grey)
-                .padding(8.dp)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+        val painter = if (meme.uri != null) {
+            rememberAsyncImagePainter(meme.uri)
+        } else {
+            painterResource(id = meme.image)
+        }
+
+        Box (
+            modifier = Modifier.fillMaxWidth().height(300.dp)
         ) {
-            val painter = if (meme.uri != null) {
-                rememberAsyncImagePainter(meme.uri)
-            } else {
-                painterResource(id = meme.image)
-            }
             Image(
                 painter = painter,
                 contentDescription = stringResource(id = meme.description),
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
-                    .height(250.dp)
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
                     .clickable { onImageClick() },
                 contentScale = ContentScale.Fit
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
+            IconButton(onClick = onDelete) {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = "Remove this meme",
+                    modifier = Modifier.align(Alignment.TopEnd).padding(8.dp)
+                )
+            }
             val text = if (meme.uri == null) {
                 meme.customLabel ?: stringResource(meme.label)
             } else {
@@ -118,8 +121,8 @@ class Gallery : ComponentActivity() {
                 label = { Text(text) },
                 placeholder = if(meme.uri != null){
                     { Text(stringResource(meme.label)) }
-                }else null,
-                modifier = Modifier.fillMaxWidth(),
+                } else null,
+                modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter),
                 singleLine = false,
                 maxLines = 3,
                 keyboardOptions = KeyboardOptions(
@@ -233,6 +236,9 @@ class Gallery : ComponentActivity() {
                         },
                         onTextChange = { newText ->
                             data.allMemes[index] = data.allMemes[index].copy(customLabel = newText)
+                        },
+                        onDelete = {
+                            data.allMemes.remove(item)
                         }
                     )
                 }
