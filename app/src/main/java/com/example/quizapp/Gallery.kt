@@ -32,7 +32,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.runtime.mutableStateListOf
+
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -82,6 +82,8 @@ class Gallery : ComponentActivity() {
 
         Column(
             modifier = Modifier
+                .weight(1f)
+                .background(Color.grey)
                 .padding(8.dp)
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -95,6 +97,7 @@ class Gallery : ComponentActivity() {
                 painter = painter,
                 contentDescription = stringResource(id = meme.description),
                 modifier = Modifier
+                    .padding(horizontal = 8.dp)
                     .height(250.dp)
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
