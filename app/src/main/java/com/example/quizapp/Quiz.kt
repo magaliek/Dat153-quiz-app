@@ -1,6 +1,7 @@
 package com.example.quizapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 
 import androidx.compose.runtime.*
@@ -50,82 +53,100 @@ class Quiz : AppCompatActivity() {
     fun QuizScreen() {
         val context = LocalContext.current
         val data = context.applicationContext as MemeData
+        var isEmpty = false
 
-        var question by remember {mutableStateOf(generateQuestion(data.allMemes))}
+        if (data.allMemes.isEmpty()) {
+            isEmpty = true
+        }
 
-        var attempts by remember {mutableStateOf(0)}
-        var correctAnswers by remember {mutableStateOf(0)}
+        var attempts by remember { mutableIntStateOf(0) }
+        var correctAnswers by remember { mutableIntStateOf(0) }
         var selectedAnswer by remember {mutableStateOf<Int?>(null)}
         val scope = rememberCoroutineScope()
 
         var showTitle by remember { mutableStateOf(true) }
 
-        val painter = if (question.meme.uri != null) {
-            rememberAsyncImagePainter(question.meme.uri)
-        } else {
-            painterResource(id = question.meme.image)
-        }
 
-        Column(
-            modifier = Modifier.fillMaxSize().statusBarsPadding().padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (showTitle) Text(
-                text = stringResource(R.string.quiz_welcome),
-                style = MaterialTheme.typography.headlineSmall
+        if (!isEmpty) {
+            var question by remember {
+                mutableStateOf(generateQuestion(data.allMemes))
+            }
 
-            )
+            val painter = if (question.meme.uri != null) {
+                rememberAsyncImagePainter(question.meme.uri)
+            } else {
+                painterResource(id = question.meme.image)
+            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .fillMaxSize()
+                    .statusBarsPadding()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                if (showTitle) Text(
+                    text = stringResource(R.string.quiz_welcome),
+                    style = MaterialTheme.typography.headlineSmall
 
-            Text(
-                text = stringResource(R.string.score_display, correctAnswers, attempts),
-                style = MaterialTheme.typography.bodyLarge
-            )
+                )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            val memeCorrect = question.correctAnswer
-            Image(
-                painter = painter,
-                contentDescription = stringResource(id = question.meme.description),
-                modifier = Modifier.height(300.dp).clip(RoundedCornerShape(12.dp)),
-                contentScale = ContentScale.Fit
-            )
+                Text(
+                    text = stringResource(R.string.score_display, correctAnswers, attempts),
+                    style = MaterialTheme.typography.bodyLarge
+                )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            question.options.forEach { option ->
-                val isCorrectChoice = option == memeCorrect
+                val memeCorrect = question.correctAnswer
+                Image(
+                    painter = painter,
+                    contentDescription = stringResource(id = question.meme.description),
+                    modifier = Modifier
+                        .height(300.dp)
+                        .clip(RoundedCornerShape(12.dp)),
+                    contentScale = ContentScale.Fit
+                )
 
-                val optionItem = data.allMemes.find { it.label == option }
-                val buttonText = optionItem?.customLabel ?: stringResource(id = option)
-                Button (
-                    onClick = {
-                        if (showTitle) showTitle = false
-                        if (selectedAnswer == null) {
+                Spacer(modifier = Modifier.height(24.dp))
+
+                question.options.forEach { option ->
+                    val isCorrectChoice = option == memeCorrect
+
+                    val optionItem = data.allMemes.find { it.label == option }
+                    val buttonText = optionItem?.customLabel ?: stringResource(id = option)
+                    Button(
+                        onClick = {
+                            if (showTitle) showTitle = false
+                            if (selectedAnswer == null) {
                                 selectedAnswer = option
                                 if (option == memeCorrect) {
                                     correctAnswers++
                                 }
                                 attempts++
                             }
-                        scope.launch {
-                            delay(1000L)
-                            question = generateQuestion(data.allMemes)
-                            selectedAnswer = null
-                        }
-                              },
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = when {
-                            selectedAnswer == option && isCorrectChoice -> Color(0xFF4CAF50)
-                            selectedAnswer == option && !isCorrectChoice -> Color.Red
-                            else -> MaterialTheme.colorScheme.primary
-                        }
-                    )
-                ) {
-                    Text(text = buttonText)
+                            scope.launch {
+                                delay(1000L)
+                                question = generateQuestion(data.allMemes)
+                                selectedAnswer = null
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = when {
+                                selectedAnswer == option && isCorrectChoice -> Color(0xFF4CAF50)
+                                selectedAnswer == option && !isCorrectChoice -> Color.Red
+                                else -> MaterialTheme.colorScheme.primary
+                            }
+                        )
+                    ) {
+                        Text(text = buttonText)
+                    }
                 }
             }
         }
@@ -143,7 +164,7 @@ fun generateQuestion(memes: List<MemeItem>): Question {
     val qMemeItem = memes.random()
     val qCorrectAnswer = qMemeItem.label
 
-    val wrongOptions = memes.filter({it.label != qCorrectAnswer}).distinct().shuffled().take(2).map{it.label}
+    val wrongOptions = memes.filter { it.label != qCorrectAnswer }.distinct().shuffled().take(2).map{it.label}
     val options = (wrongOptions + qCorrectAnswer).shuffled()
 
     return Question(qMemeItem, options, qCorrectAnswer)
