@@ -37,5 +37,6 @@
     <string name="desc_new_meme">just added image</string>
 
     <string name="quiz_welcome">Welcome to the brainrot quiz! How brainrotted are you? Let\'s find out!</string>
+    <string name="empty">Add something to your gallery!</string>
     <string name="score_display">Score: %1$d / %2$d</string>
 </resources>

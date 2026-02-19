@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -89,7 +91,6 @@ class Quiz : AppCompatActivity() {
                 if (showTitle) Text(
                     text = stringResource(R.string.quiz_welcome),
                     style = MaterialTheme.typography.headlineSmall
-
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -148,6 +149,21 @@ class Quiz : AppCompatActivity() {
                         Text(text = buttonText)
                     }
                 }
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .statusBarsPadding()
+                    .background(Color.Black),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    text = stringResource(R.string.empty),
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = Color.White,
+                )
             }
         }
     }

@@ -90,7 +90,9 @@ class Gallery : ComponentActivity() {
         }
 
         Box (
-            modifier = Modifier.fillMaxWidth().height(300.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)
         ) {
             Image(
                 painter = painter,
