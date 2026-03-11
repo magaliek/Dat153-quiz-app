@@ -9,6 +9,7 @@ material = "1.13.0"
 activity = "1.12.3"
 constraintlayout = "2.2.1"
 gridlayout = "1.1.0"
+roomVersion = "2.8.4"
 runtime = "1.10.2"
 ui = "1.10.2"
 material3 = "1.4.0"
@@ -20,7 +21,7 @@ foundationLayout = "1.10.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-foundation = { module = "androidx.compose.foundation:foundation" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

@@ -1,9 +1,9 @@
 package com.example.quizapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,6 +33,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.example.quizapp.viewmodel.QuizViewModel
+import com.example.quizapp.viewmodel.QuizViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -55,31 +57,27 @@ class Quiz : AppCompatActivity() {
     fun QuizScreen() {
         val context = LocalContext.current
         val data = context.applicationContext as MemeData
+        val viewModel : QuizViewModel by viewModels {
+            QuizViewModelFactory(data.memeDao)
+        }
+        var question = viewModel.question
         var isEmpty = false
 
-        if (data.allMemes.isEmpty()) {
+        if (question.meme == null) {
             isEmpty = true
         }
 
-        var attempts by remember { mutableIntStateOf(0) }
-        var correctAnswers by remember { mutableIntStateOf(0) }
-        var selectedAnswer by remember {mutableStateOf<Int?>(null)}
         val scope = rememberCoroutineScope()
+
+        var attempts by remember {mutableIntStateOf(0)}
+        var correctAnswers by remember {mutableIntStateOf(0)}
+        var selectedAnswer by remember {mutableStateOf<Int?>(0)}
 
         var showTitle by remember { mutableStateOf(true) }
 
 
         if (!isEmpty) {
-            var question by remember {
-                mutableStateOf(generateQuestion(data.allMemes))
-            }
-
-            val painter = if (question.meme.uri != null) {
-                rememberAsyncImagePainter(question.meme.uri)
-            } else {
-                painterResource(id = question.meme.image)
-            }
-
+            val painter = rememberAsyncImagePainter(question.meme!!.uri)
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
@@ -105,7 +103,7 @@ class Quiz : AppCompatActivity() {
                 val memeCorrect = question.correctAnswer
                 Image(
                     painter = painter,
-                    contentDescription = stringResource(id = question.meme.description),
+                    contentDescription = stringResource(id = question.meme!!.description),
                     modifier = Modifier
                         .height(300.dp)
                         .clip(RoundedCornerShape(12.dp)),
@@ -117,21 +115,13 @@ class Quiz : AppCompatActivity() {
                 question.options.forEach { option ->
                     val isCorrectChoice = option == memeCorrect
 
-                    val optionItem = data.allMemes.find { it.label == option }
-                    val buttonText = optionItem?.customLabel ?: stringResource(id = option)
+                    val buttonText = stringResource(id = option)
                     Button(
                         onClick = {
                             if (showTitle) showTitle = false
-                            if (selectedAnswer == null) {
-                                selectedAnswer = option
-                                if (option == memeCorrect) {
-                                    correctAnswers++
-                                }
-                                attempts++
-                            }
                             scope.launch {
                                 delay(1000L)
-                                question = generateQuestion(data.allMemes)
+                                viewModel.generateQuestion()
                                 selectedAnswer = null
                             }
                         },
@@ -168,22 +158,3 @@ class Quiz : AppCompatActivity() {
         }
     }
 }
-
-/**
- * Logic to generate a new quiz question.
- * * Selects a random "correct" meme and pulls two other "wrong" memes
- * to create a set of three unique options.
- * * @param memes The master list of available [MemeItem]s.
- * @return A [Question] object containing the target meme and shuffled options.
- */
-fun generateQuestion(memes: List<MemeItem>): Question {
-    val qMemeItem = memes.random()
-    val qCorrectAnswer = qMemeItem.label
-
-    val wrongOptions = memes.filter { it.label != qCorrectAnswer }.distinct().shuffled().take(2).map{it.label}
-    val options = (wrongOptions + qCorrectAnswer).shuffled()
-
-    return Question(qMemeItem, options, qCorrectAnswer)
-}
-
-data class Question(val meme: MemeItem, val options: List<Int>, val correctAnswer: Int)

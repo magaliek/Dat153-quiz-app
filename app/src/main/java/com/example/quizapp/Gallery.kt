@@ -57,6 +57,7 @@ import androidx.compose.material.icons.filled.SortByAlpha
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import com.example.quizapp.data.Meme
 import kotlinx.coroutines.launch
 import kotlin.let
 
@@ -80,14 +81,10 @@ class Gallery : ComponentActivity() {
      * @param onTextChange Callback triggered when the user edits the name field.
      */
     @Composable
-    fun MemeCard(meme: MemeItem, onImageClick: () -> Unit, onTextChange: (String) -> Unit, onDelete: () -> Unit) {
+    fun MemeCard(meme: Meme, onImageClick: () -> Unit, onTextChange: (String) -> Unit, onDelete: () -> Unit) {
         val focusManager = LocalFocusManager.current
 
-        val painter = if (meme.uri != null) {
-            rememberAsyncImagePainter(meme.uri)
-        } else {
-            painterResource(id = meme.image)
-        }
+        val painter = rememberAsyncImagePainter(meme.uri)
 
         Box (
             modifier = Modifier
@@ -112,18 +109,14 @@ class Gallery : ComponentActivity() {
                     modifier = Modifier.align(Alignment.TopEnd).padding(8.dp)
                 )
             }
-            val text = if (meme.uri == null) {
-                meme.customLabel ?: stringResource(meme.label)
-            } else {
-                meme.customLabel ?: ""
-            }
+            val text = stringResource(meme.label)
             OutlinedTextField(
                 value = text,
                 onValueChange = {onTextChange(it)},
                 label = { Text(text) },
-                placeholder = if(meme.uri != null){
+                placeholder = run {
                     { Text(stringResource(meme.label)) }
-                } else null,
+                },
                 modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter),
                 singleLine = false,
                 maxLines = 3,
@@ -249,19 +242,3 @@ class Gallery : ComponentActivity() {
 
     }
 }
-
-/**
- * Represents a single meme entry in the gallery.
- * @property image The drawable resource ID for the default image.
- * @property label The string resource ID for the meme's name.
- * @property description The string resource ID for the meme's description.
- * @property uri A custom image URI if the user replaced the default image.
- * @property customLabel A user-defined string to override the default name.
- */
-data class MemeItem(
-    val image: Int,
-    val label: Int,
-    val description: Int,
-    var uri: Uri? = null,
-    var customLabel: String? = null
-)
