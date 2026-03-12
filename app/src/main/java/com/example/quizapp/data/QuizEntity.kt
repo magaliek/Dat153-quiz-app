@@ -8,10 +8,8 @@ import androidx.room.PrimaryKey
 data class Meme (
     @PrimaryKey(true) val id: Int = 0,
     @ColumnInfo(name = "URI") var uri: String,
-    var label: Int,
+    val label: String,
     var description: Int,
-    var attempts : Int? = 0,
-    var correctAnswers: Int? = 0,
-    var selectedAnswer: Int? = 0
+    var stringInputLabel: String? = null
     )
 

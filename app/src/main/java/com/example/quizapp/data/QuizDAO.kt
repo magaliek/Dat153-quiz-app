@@ -6,15 +6,11 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MemeDao {
     @Query("SELECT * FROM Meme")
     suspend fun getAll(): List<Meme>
-
-    @Query("SELECT * FROM Meme WHERE id IN (:ids)")
-    suspend fun getAllById(ids: IntArray) : List<Meme>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg memes : Meme)
@@ -28,6 +24,9 @@ interface MemeDao {
     @Query("SELECT COUNT(*) FROM Meme")
     suspend fun getCount() : Int
 
-    @Query("SELECT * FROM Meme ORDER BY RANDOM() LIMIT 1")
-    suspend fun random() : Meme
+    @Query("SELECT * From Meme ORDER BY label ASC")
+    suspend fun sortAsc() : List<Meme>
+
+    @Query("SELECT * From Meme ORDER BY label DESC")
+    suspend fun sortDesc() : List<Meme>
 }

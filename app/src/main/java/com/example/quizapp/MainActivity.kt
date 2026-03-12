@@ -9,12 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import android.content.Intent
 import kotlin.jvm.java
 
-/**
- * The entry point of the application.
- * * Provides a simple menu interface with navigation to the Meme Gallery
- * and the Meme Quiz. It handles the initial edge-to-edge window setup
- * and button click listeners for Activity navigation.
- */
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

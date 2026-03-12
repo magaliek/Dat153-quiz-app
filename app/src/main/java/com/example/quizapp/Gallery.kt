@@ -1,7 +1,6 @@
 package com.example.quizapp
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import android.os.Bundle
 import coil.compose.rememberAsyncImagePainter
 import androidx.activity.ComponentActivity
@@ -19,16 +18,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 
 import androidx.compose.runtime.Composable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -40,7 +36,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -54,6 +49,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.SortByAlpha
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -70,20 +67,10 @@ class Gallery : ComponentActivity() {
         }
     }
 
-    /**
-     * A UI component that displays a single meme.
-     * * Includes an [Image] that triggers a photo picker on click and an
-     * [OutlinedTextField] for editing the meme's name. It switches between
-     * floating labels and placeholders based on whether the meme is a "classic"
-     * template or a user-added image.
-     * * @param meme The [MemeItem] data to display.
-     * @param onImageClick Callback triggered when the meme image is tapped.
-     * @param onTextChange Callback triggered when the user edits the name field.
-     */
+
     @Composable
     fun MemeCard(meme: Meme, onImageClick: () -> Unit, onTextChange: (String) -> Unit, onDelete: () -> Unit) {
         val focusManager = LocalFocusManager.current
-
         val painter = rememberAsyncImagePainter(meme.uri)
 
         Box (
@@ -109,13 +96,14 @@ class Gallery : ComponentActivity() {
                     modifier = Modifier.align(Alignment.TopEnd).padding(8.dp)
                 )
             }
-            val text = stringResource(meme.label)
+            val text = meme.stringInputLabel ?: meme.label
+
             OutlinedTextField(
                 value = text,
                 onValueChange = {onTextChange(it)},
                 label = { Text(text) },
                 placeholder = run {
-                    { Text(stringResource(meme.label)) }
+                    { Text(meme.label) }
                 },
                 modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter),
                 singleLine = false,
@@ -131,57 +119,70 @@ class Gallery : ComponentActivity() {
         }
     }
 
-    /**
-     * The main screen for the Meme Gallery.
-     * Manages the state of the meme list, handles image picking results,
-     * and coordinates the grid layout and sorting logic.
-     */
+
     @SuppressLint("LocalContextGetResourceValueCall")
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun GalleryScreen() {
         val context = LocalContext.current
         val data = context.applicationContext as MemeData
+        val dao = data.memeDao
         val gridState = rememberLazyGridState()
         val scope = rememberCoroutineScope()
 
-        remember {
-            data.allMemes
-            true
-        }
+        var clickedIndex by remember { mutableIntStateOf(-1) }
+        var count by remember { mutableIntStateOf(0) }
+        var memes by remember {mutableStateOf<List<Meme>>(emptyList())}
+        val newMemeLabel = stringResource(R.string.new_meme)
 
-        var clickedIndex by remember { mutableStateOf(-1) }
+        LaunchedEffect(Unit) {
+            memes = when (data.isAscending) {
+                true -> dao.sortAsc()
+                false -> dao.sortDesc()
+                null -> dao.getAll()
+            }
+            count = dao.getCount()
+        }
 
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.PickVisualMedia()
         ) { uri ->
             uri?.let {
                 if (clickedIndex != -1) {
-                    data.allMemes[clickedIndex] = data.allMemes[clickedIndex].copy(uri = it)
+                    scope.launch {
+                        val existing = memes[clickedIndex]
+                        existing.let { meme ->
+                            val updatedMeme = meme.copy(uri = it.toString())
+                            dao.updateMemes(updatedMeme)
+                            memes = when (data.isAscending) {
+                                true -> dao.sortAsc()
+                                false -> dao.sortDesc()
+                                null -> dao.getAll()
+                            }
+                            count = dao.getCount()
+                        }
+                    }
                 }
             }
         }
-
-
 
         val addLauncher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.PickVisualMedia()
         ) { uri ->
             uri?.let {selectedUri ->
-                val newItem = MemeItem(
-                    image = 0,
-                    label = R.string.new_meme,
-                    description = R.string.desc_new_meme,
-                    uri = selectedUri
-                )
-                data.allMemes.add(newItem)
                 scope.launch {
-                    gridState.animateScrollToItem(data.allMemes.size - 1)
+                    dao.insertAll(Meme(uri = selectedUri.toString(), label = newMemeLabel, description = R.string.desc_new_meme))
+                    memes = when (data.isAscending) {
+                        true -> dao.sortAsc()
+                        false -> dao.sortDesc()
+                        null -> dao.getAll()
+                    }
+                    count = dao.getCount()
+                    gridState.animateScrollToItem(count - 1)
                 }
             }
         }
 
-        var isAscending by remember {mutableStateOf(false)}
 
         Scaffold(
             topBar = {
@@ -195,12 +196,10 @@ class Gallery : ComponentActivity() {
                         }
 
                         IconButton(onClick = {
-                            if (isAscending) {
-                                data.allMemes.sortBy { memeItem -> context.getString(memeItem.label).lowercase()}
-                            } else {
-                                data.allMemes.sortByDescending {context.getString(it.label).lowercase()}
+                            scope.launch {
+                                data.isAscending = !(data.isAscending ?: false)
+                                memes = if (data.isAscending == true) dao.sortAsc() else dao.sortDesc()
                             }
-                            isAscending = !isAscending
                         }) {
                             Icon(
                                 imageVector = Icons.Default.SortByAlpha,
@@ -210,7 +209,7 @@ class Gallery : ComponentActivity() {
                     }
                 )
             }
-        ) {paddingValues ->
+        ) { paddingValues ->
             LazyVerticalGrid(
                 state = gridState,
                 columns = GridCells.Fixed(2),
@@ -219,8 +218,8 @@ class Gallery : ComponentActivity() {
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                items(data.allMemes.size) { index ->
-                    val item = data.allMemes[index]
+                items(count) { index ->
+                    val item = memes[index]
                     MemeCard(
                         meme = item,
                         onImageClick = {
@@ -230,10 +229,28 @@ class Gallery : ComponentActivity() {
                             )
                         },
                         onTextChange = { newText ->
-                            data.allMemes[index] = data.allMemes[index].copy(customLabel = newText)
+                            val updated = item.copy(stringInputLabel = newText)
+
+                            scope.launch {
+                                dao.updateMemes(updated)
+                                memes = when (data.isAscending) {
+                                    true -> dao.sortAsc()
+                                    false -> dao.sortDesc()
+                                    null -> dao.getAll()
+                                }
+                                count = dao.getCount()
+                            }
                         },
                         onDelete = {
-                            data.allMemes.remove(item)
+                            scope.launch {
+                                dao.delete(item)
+                                memes = when (data.isAscending) {
+                                    true -> dao.sortAsc()
+                                    false -> dao.sortDesc()
+                                    null -> dao.getAll()
+                                }
+                                count = dao.getCount()
+                            }
                         }
                     )
                 }

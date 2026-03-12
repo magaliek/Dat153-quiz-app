@@ -29,7 +29,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -47,12 +46,7 @@ class Quiz : AppCompatActivity() {
         }
     }
 
-    /**
-     * The Quiz Activity where users test their knowledge of the memes.
-     * * Displays a random meme image and generates multiple-choice buttons.
-     * It accounts for custom labels set in the Gallery to ensure the quiz
-     * stays updated with user changes.
-     */
+
     @Composable
     fun QuizScreen() {
         val context = LocalContext.current
@@ -60,21 +54,24 @@ class Quiz : AppCompatActivity() {
         val viewModel : QuizViewModel by viewModels {
             QuizViewModelFactory(data.memeDao)
         }
+
+        val scope = rememberCoroutineScope()
+
+        var attempts by remember {mutableIntStateOf(0)}
+        var correctAnswers by remember {mutableIntStateOf(0)}
+        var selectedAnswer by remember {mutableStateOf<String?>(null)}
+
+        var showTitle by remember { mutableStateOf(true) }
+
+        LaunchedEffect(Unit) {
+            viewModel.generateQuestion()
+        }
         var question = viewModel.question
         var isEmpty = false
 
         if (question.meme == null) {
             isEmpty = true
         }
-
-        val scope = rememberCoroutineScope()
-
-        var attempts by remember {mutableIntStateOf(0)}
-        var correctAnswers by remember {mutableIntStateOf(0)}
-        var selectedAnswer by remember {mutableStateOf<Int?>(0)}
-
-        var showTitle by remember { mutableStateOf(true) }
-
 
         if (!isEmpty) {
             val painter = rememberAsyncImagePainter(question.meme!!.uri)
@@ -103,7 +100,7 @@ class Quiz : AppCompatActivity() {
                 val memeCorrect = question.correctAnswer
                 Image(
                     painter = painter,
-                    contentDescription = stringResource(id = question.meme!!.description),
+                    contentDescription = stringResource(id = question.meme.description),
                     modifier = Modifier
                         .height(300.dp)
                         .clip(RoundedCornerShape(12.dp)),
@@ -115,10 +112,14 @@ class Quiz : AppCompatActivity() {
                 question.options.forEach { option ->
                     val isCorrectChoice = option == memeCorrect
 
-                    val buttonText = stringResource(id = option)
                     Button(
                         onClick = {
                             if (showTitle) showTitle = false
+
+                            attempts++
+                            if(isCorrectChoice) correctAnswers++
+                            selectedAnswer = option
+
                             scope.launch {
                                 delay(1000L)
                                 viewModel.generateQuestion()
@@ -136,7 +137,7 @@ class Quiz : AppCompatActivity() {
                             }
                         )
                     ) {
-                        Text(text = buttonText)
+                        Text(text = option)
                     }
                 }
             }

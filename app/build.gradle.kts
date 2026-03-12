@@ -1,21 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
-
+    alias(libs.plugins.ksp)
     id("org.jetbrains.kotlin.plugin.compose") version "2.3.10"
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
     namespace = "com.example.quizapp"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
     buildFeatures {
         compose = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
     defaultConfig {
         applicationId = "com.example.quizapp"
         minSdk = 24
@@ -39,9 +35,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    kotlin {
+        compilerOptions {
+            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+        }
+    }
 }
 
 dependencies {
+    implementation(libs.core.ktx)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
