@@ -12,6 +12,9 @@ interface MemeDao {
     @Query("SELECT * FROM Meme")
     suspend fun getAll(): List<Meme>
 
+    @Query("SELECT * FROM Meme")
+    fun getAllSync() : List<Meme>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg memes : Meme)
 

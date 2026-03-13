@@ -1,6 +1,7 @@
-package com.example.quizapp.viewmodel
+package com.example.quizapp.viewmodels
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -26,6 +27,9 @@ class QuizViewModel(private val dao : MemeDao) : ViewModel() {
     private set
 
     private var index = 0
+
+    var attempts by mutableIntStateOf(0)
+    var correctAnswers by mutableIntStateOf(0)
 
     suspend fun generateQuestion() {
         val allMemes = dao.getAll()

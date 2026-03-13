@@ -32,8 +32,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.example.quizapp.viewmodel.QuizViewModel
-import com.example.quizapp.viewmodel.QuizViewModelFactory
+import com.example.quizapp.viewmodels.QuizViewModel
+import com.example.quizapp.viewmodels.QuizViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -57,8 +57,6 @@ class Quiz : AppCompatActivity() {
 
         val scope = rememberCoroutineScope()
 
-        var attempts by remember {mutableIntStateOf(0)}
-        var correctAnswers by remember {mutableIntStateOf(0)}
         var selectedAnswer by remember {mutableStateOf<String?>(null)}
 
         var showTitle by remember { mutableStateOf(true) }
@@ -91,7 +89,7 @@ class Quiz : AppCompatActivity() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = stringResource(R.string.score_display, correctAnswers, attempts),
+                    text = stringResource(R.string.score_display, viewModel.correctAnswers, viewModel.attempts),
                     style = MaterialTheme.typography.bodyLarge
                 )
 
@@ -116,8 +114,8 @@ class Quiz : AppCompatActivity() {
                         onClick = {
                             if (showTitle) showTitle = false
 
-                            attempts++
-                            if(isCorrectChoice) correctAnswers++
+                            viewModel.attempts++
+                            if(isCorrectChoice) viewModel.correctAnswers++
                             selectedAnswer = option
 
                             scope.launch {

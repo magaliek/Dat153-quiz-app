@@ -44,6 +44,7 @@ android {
 
 dependencies {
     implementation(libs.core.ktx)
+    implementation(libs.androidx.espresso.intents)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.core.ktx)
@@ -63,4 +64,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.intents)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
 }
