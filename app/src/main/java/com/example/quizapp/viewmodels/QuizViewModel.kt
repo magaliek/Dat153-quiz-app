@@ -32,7 +32,7 @@ class QuizViewModel(private val dao : MemeDao) : ViewModel() {
     var correctAnswers by mutableIntStateOf(0)
 
     suspend fun generateQuestion() {
-        val allMemes = dao.getAll()
+        val allMemes = dao.getAll().shuffled()
         if (allMemes.isEmpty()) {
             question = Question()
             return
@@ -40,7 +40,7 @@ class QuizViewModel(private val dao : MemeDao) : ViewModel() {
 
         val qMemeItem = allMemes[index]
         val qCorrectAnswer = qMemeItem.label
-        index++
+        index = (index + 1) % allMemes.size
 
         val wrongOptions = dao.getAll().filter { it.label != qCorrectAnswer }.distinct().shuffled().take(2).map{it.label}
         val options = (wrongOptions + qCorrectAnswer).shuffled()

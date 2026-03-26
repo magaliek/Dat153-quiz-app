@@ -64,7 +64,7 @@ class Quiz : AppCompatActivity() {
         LaunchedEffect(Unit) {
             viewModel.generateQuestion()
         }
-        var question = viewModel.question
+        val question = viewModel.question
         var isEmpty = false
 
         if (question.meme == null) {
